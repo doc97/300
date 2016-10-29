@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gamedev.threehundred.Game300;
 
 /**
@@ -15,7 +14,9 @@ import com.gamedev.threehundred.Game300;
  */
 public class ScreenSystem {
 	private Map<Screens, Screen> screens;
-	private Screens screenToEnter = null;
+	private Screens current;
+	private Screens next = null;
+	private Screens saved = null;
 	private Game300 game;
 	
 	public ScreenSystem(Game300 game) {
@@ -26,8 +27,9 @@ public class ScreenSystem {
 	/**
 	 * Adds screens to the FSM
 	 */
-	public void initialize(SpriteBatch batch) {
-		screens.put(Screens.GAMESCREEN, new GameScreen(batch));
+	public void initialize() {
+		screens.put(Screens.LOADINGSCREEN, new LoadingScreen(game));
+		screens.put(Screens.GAMESCREEN, new GameScreen(game));
 	}
 	
 	/**
@@ -36,9 +38,9 @@ public class ScreenSystem {
 	 * or because the change should not be immediate
 	 */
 	public void update() {
-		if(screenToEnter != null) {
-			enterScreen(screenToEnter);
-			screenToEnter = null;
+		if(next != null) {
+			enterScreen(next);
+			next = null;
 		}
 	}
 	
@@ -51,6 +53,7 @@ public class ScreenSystem {
 		Screen s = screens.get(screen);
 		if(s != null) {
 			game.setScreen(s);
+			current = screen;
 		} else {
 			Gdx.app.log("ScreenSystem", "No screen with id: " + screen.toString());
 		}
@@ -60,8 +63,20 @@ public class ScreenSystem {
 		game.setScreen(null);
 	}
 	
-	public void setScreenToEnter(Screens screen) {
-		screenToEnter = screen;
+	public void setNextScreen(Screens screen) {
+		next = screen;
+	}
+	
+	public void setSavedScreen(Screens screen) {
+		saved = screen;
+	}
+	
+	public Screens getCurrentScreen() {
+		return current;
+	}
+	
+	public Screens getSavedScreen() {
+		return saved;
 	}
 	
 	public void dispose() {
