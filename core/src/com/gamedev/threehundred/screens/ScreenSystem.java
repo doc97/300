@@ -22,12 +22,13 @@ public class ScreenSystem {
 	public ScreenSystem(Game300 game) {
 		this.game = game;
 		screens = new HashMap<Screens, Screen>();
+		initialize();
 	}
 	
 	/**
 	 * Adds screens to the FSM
 	 */
-	public void initialize() {
+	private void initialize() {
 		screens.put(Screens.LOADINGSCREEN, new LoadingScreen(game));
 		screens.put(Screens.GAMESCREEN, new GameScreen(game));
 	}
