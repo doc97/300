@@ -36,6 +36,7 @@ public class LoadingScreen extends ScreenAdapter {
 		Texture playerTexture = game.getAssetManager().get("badlogic.jpg", Texture.class);
 		if (playerTexture == null) return false;
 		Player player = new Player(playerTexture);
+		player.maxVelocity = 8;
 		player.position.set(100, 0);
 		game.getEntitySystem().addEntity(player);
 		game.setPlayer(player);

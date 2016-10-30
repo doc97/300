@@ -10,6 +10,7 @@ public class Player extends Entity {
 	}
 	
 	public void update(float delta) {
+		velocity.add(acceleration).limit(maxVelocity);
 		position.add(velocity);
 	}
 	

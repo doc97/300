@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class Entity {
 	public Vector2 position = new Vector2();
 	public Vector2 velocity = new Vector2();
+	public Vector2 acceleration = new Vector2();
+	public float maxVelocity;
 	protected Texture texture;
 	
 	public abstract void update(float delta);

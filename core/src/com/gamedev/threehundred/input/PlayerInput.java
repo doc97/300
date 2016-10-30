@@ -9,6 +9,7 @@ public class PlayerInput extends InputAdapter {
 	private Player player;
 	private int moveRight = Keys.D;
 	private int moveLeft = Keys.A;
+	private int keysDownCount;
 	
 	public PlayerInput(Player player) {
 		this.player = player;
@@ -17,24 +18,30 @@ public class PlayerInput extends InputAdapter {
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == moveRight)
-			player.velocity.set(10, 0);
+			player.acceleration.set(2, 0);
 		else if (keycode == moveLeft)
-			player.velocity.set(-10, 0);
+			player.acceleration.set(-2, 0);
 		else
 			return false;
 		
+		keysDownCount++;
 		return true;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if (keycode == moveRight && player.velocity.x > 0)
-			player.velocity.set(0, 0);
-		if (keycode == moveLeft && player.velocity.x < 0)
-			player.velocity.set(0, 0);
+		if (keycode == moveRight)
+			player.acceleration.set(-2, 0);
+		else if (keycode == moveLeft)
+			player.acceleration.set(2, 0);
 		else
 			return false;
 		
+		keysDownCount--;
+		if (keysDownCount == 0) {
+			player.acceleration.set(0, 0);
+			player.velocity.set(0, 0);
+		}
 		return true;
 	}
 }
