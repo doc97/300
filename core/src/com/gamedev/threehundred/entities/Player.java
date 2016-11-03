@@ -2,10 +2,12 @@ package com.gamedev.threehundred.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.gamedev.threehundred.Game300;
 
 public class Player extends Entity {
 	
-	public Player(Texture texture) {
+	public Player(Game300 game, Texture texture) {
+		super(game);
 		this.texture = texture;
 	}
 	

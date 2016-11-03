@@ -5,12 +5,16 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gamedev.threehundred.entities.Entity;
+import com.gamedev.threehundred.entities.Player;
 
 public class EntitySystem {
 
+	private Player player;
 	private List<Entity> entities = new ArrayList<>();
 	
 	public void addEntity(Entity entity) {
+		if (entity instanceof Player)
+			player = (Player) entity;
 		entities.add(entity);
 	}
 	
@@ -30,5 +34,9 @@ public class EntitySystem {
 
 	public int getEntityCount() {
 		return entities.size();
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 }

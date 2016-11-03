@@ -1,11 +1,10 @@
 package com.gamedev.threehundred;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.gamedev.threehundred.entities.Player;
+import com.gamedev.threehundred.entities.SpawnSystem;
 import com.gamedev.threehundred.input.InputSystem;
 import com.gamedev.threehundred.screens.ScreenSystem;
 import com.gamedev.threehundred.screens.Screens;
@@ -16,32 +15,25 @@ public class Game300 extends Game {
 	private AssetManager manager;
 	private EntitySystem entitySys;
 	private InputSystem inputSys;
-	private Player player;
 	private ScreenSystem screenSys;
+	private SpawnSystem spawnSys;
 	private SpriteBatch batch;
 	
 	@Override
 	public void create () {
-		loadEngine();
-		loadAssets();
-	}
-	
-	private void loadEngine() {
 		batch = new SpriteBatch();
 		entitySys = new EntitySystem();
 		inputSys = new InputSystem();
 		manager = new AssetManager();
 		screenSys = new ScreenSystem(this);
+		spawnSys = new SpawnSystem(this);
 		Texture.setAssetManager(manager);
 		
 		screenSys.setNextScreen(Screens.LOADINGSCREEN);
 		screenSys.setSavedScreen(Screens.GAMESCREEN);
 	}
 	
-	private void loadAssets() {
-		manager.load("badlogic.jpg", Texture.class);
-	}
-
+	
 	@Override
 	public void render () {
 		screenSys.update();
@@ -49,26 +41,10 @@ public class Game300 extends Game {
 	}
 	
 	@Override
-	public void resume() {
-		screenSys.setSavedScreen(screenSys.getCurrentScreen());
-		screenSys.setNextScreen(Screens.LOADINGSCREEN);
-		
-		// Only Textures need to be reloaded after a resume
-		Gdx.app.log("Game300", "Reloading assets");
-		if (!manager.isLoaded("badlogic.jpg", Texture.class))
-			manager.load("badlogic.jpg", Texture.class);
-	}
-	
-	@Override
 	public void dispose () {
 		batch.dispose();
 		manager.dispose();
 		inputSys.dispose();
-	}
-	
-	public void setPlayer(Player player) {
-		if (player == null)
-			this.player = player;
 	}
 	
 	public AssetManager getAssetManager() {
@@ -83,12 +59,12 @@ public class Game300 extends Game {
 		return inputSys;
 	}
 	
-	public Player getPlayer() {
-		return player;
-	}
-	
 	public ScreenSystem getScreenSystem() {
 		return screenSys;
+	}
+	
+	public SpawnSystem getSpawnSystem() {
+		return spawnSys;
 	}
 	
 	public SpriteBatch getSpriteBatch() {
