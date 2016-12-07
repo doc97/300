@@ -19,6 +19,8 @@ public class GameScreen extends ScreenAdapter {
 		// Update
 		game.getSpawnSystem().update(delta);
 		game.getEntitySystem().update(delta);
+		game.getPhysicsSystem().preUpdate();
+		game.getPhysicsSystem().update(delta);
 		
 		// Render
 		Gdx.gl.glClearColor(1, 0, 0, 1);

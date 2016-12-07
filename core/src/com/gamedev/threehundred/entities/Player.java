@@ -17,6 +17,9 @@ public class Player extends Entity {
 	}
 	
 	public void render(SpriteBatch batch) {
-		batch.draw(texture, position.x, position.y);
+		batch.draw(texture,
+				position.x,
+				position.y,
+				hitbox.getWidth(), hitbox.getHeight());
 	}
 }

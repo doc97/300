@@ -9,6 +9,7 @@ import com.gamedev.threehundred.input.InputSystem;
 import com.gamedev.threehundred.screens.ScreenSystem;
 import com.gamedev.threehundred.screens.Screens;
 import com.gamedev.threehundred.systems.EntitySystem;
+import com.gamedev.threehundred.systems.PhysicsSystem;
 
 public class Game300 extends Game {
 	
@@ -18,6 +19,7 @@ public class Game300 extends Game {
 	private ScreenSystem screenSys;
 	private SpawnSystem spawnSys;
 	private SpriteBatch batch;
+	private PhysicsSystem physics;
 	
 	@Override
 	public void create () {
@@ -27,6 +29,7 @@ public class Game300 extends Game {
 		manager = new AssetManager();
 		screenSys = new ScreenSystem(this);
 		spawnSys = new SpawnSystem(this);
+		physics = new PhysicsSystem(this);
 		Texture.setAssetManager(manager);
 		
 		screenSys.setNextScreen(Screens.LOADINGSCREEN);
@@ -69,5 +72,9 @@ public class Game300 extends Game {
 	
 	public SpriteBatch getSpriteBatch() {
 		return batch;
+	}
+	
+	public PhysicsSystem getPhysicsSystem() {
+		return physics;
 	}
 }

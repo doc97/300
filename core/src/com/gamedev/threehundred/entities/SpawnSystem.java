@@ -3,8 +3,10 @@ package com.gamedev.threehundred.entities;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.gamedev.threehundred.Game300;
+import com.gamedev.threehundred.physics.Hitbox;
 
 public class SpawnSystem {
 
@@ -33,6 +35,9 @@ public class SpawnSystem {
 		Vector2 spawn = selectSpawner();
 		Vector2 target = selectTarget();
 		Vector2 velocity = target.cpy().sub(spawn).setLength(projectileSpeed);
+		float angleRad = (float) (Math.atan2(velocity.y, velocity.x) - Math.PI / 2.0f);
+		float angleDeg = 180.0f * angleRad / (float) Math.PI;
+		
 		
 		Projectile projectile = new Projectile(game);
 		projectile.acceleration = Vector2.Zero;
@@ -40,7 +45,12 @@ public class SpawnSystem {
 		projectile.velocity = new Vector2(velocity.x, velocity.y);
 		projectile.position = new Vector2(spawn.x, spawn.y);
 		projectile.texture = game.getAssetManager().get("badlogic.jpg", Texture.class);
+		projectile.rotation = angleDeg;
+		Rectangle box = new Rectangle(-4, -32, 8f, 64f);
+		projectile.hitbox = new Hitbox(projectile.position, box, projectile);
+		projectile.hitbox.rotate(projectile.rotation);
 		game.getEntitySystem().addEntity(projectile);
+		game.getPhysicsSystem().addObject(projectile.hitbox);
 	}
 	
 	private Vector2 selectSpawner() {

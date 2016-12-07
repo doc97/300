@@ -3,11 +3,13 @@ package com.gamedev.threehundred.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.gamedev.threehundred.Game300;
 import com.gamedev.threehundred.entities.Player;
 import com.gamedev.threehundred.input.Inputs;
 import com.gamedev.threehundred.input.PlayerInput;
+import com.gamedev.threehundred.physics.Hitbox;
 
 public class LoadingScreen extends ScreenAdapter {
 
@@ -51,14 +53,18 @@ public class LoadingScreen extends ScreenAdapter {
 		if (playerTexture == null)
 			throw new RuntimeException("Player texture not loaded");
 		Player player = new Player(game, playerTexture);
+		float size = 120;
 		player.maxVelocity = 8;
-		player.position.set(100, 0);
+		player.position.set(100, size / 2);
+		player.hitbox = new Hitbox(player.position, new Rectangle(-size / 2, -size / 2, size, size), player);
+		player.setImmune(true);
 		game.getEntitySystem().addEntity(player);
+		game.getPhysicsSystem().addObject(player.hitbox);
 	}
 	
 	private void initializeSpawnSystem() {
 		game.getSpawnSystem().setProjectileSpeed(2);
-		game.getSpawnSystem().setSpawnDelay(0.5f);
+		game.getSpawnSystem().setSpawnDelay(2f);
 		
 		Vector2[] spawners = new Vector2[] {
 			new Vector2(0, Gdx.graphics.getHeight()),
