@@ -8,13 +8,28 @@ import com.gamedev.threehundred.entities.Entity;
 import com.gamedev.threehundred.entities.Player;
 import com.gamedev.threehundred.entities.Projectile;
 import com.gamedev.threehundred.entities.Soldier;
+import com.gamedev.threehundred.events.EntityCollisionEvent;
+import com.gamedev.threehundred.events.Event;
+import com.gamedev.threehundred.events.EventListener;
 
-public class EntitySystem {
+public class EntitySystem implements EventListener {
 
 	private Player player;
 	private List<Soldier> soldiers = new ArrayList<>();
 	private List<Projectile> projectiles = new ArrayList<>();
 	private List<Entity> entities = new ArrayList<>();
+	
+	@Override
+	public void process(Event event) {
+		if (event instanceof EntityCollisionEvent) {
+			Entity e1 = ((EntityCollisionEvent) event).getEntityOne();
+			Entity e2 = ((EntityCollisionEvent) event).getEntityTwo();
+			if (!e1.isImmune())
+				removeEntity(e1);
+			if (!e2.isImmune())
+				removeEntity(e2);
+		}
+	}
 	
 	public void addEntity(Entity entity) {
 		if (entity instanceof Player)

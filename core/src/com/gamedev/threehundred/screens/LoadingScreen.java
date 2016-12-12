@@ -68,7 +68,7 @@ public class LoadingScreen extends ScreenAdapter {
 		Player player = new Player(game, playerTexture);
 		float size = 80;
 		player.maxVelocity = 8;
-		player.position.set(100, size / 2 + 200);
+		player.position.set(Gdx.graphics.getWidth() / 2, size / 2 + 180);
 		player.hitbox = new Hitbox(player.position, new Rectangle(-size / 2, -size / 2, size, size), player);
 		player.setImmune(true);
 		game.getEntitySystem().addEntity(player);
@@ -79,7 +79,7 @@ public class LoadingScreen extends ScreenAdapter {
 		Texture soldierTexture = game.getAssetManager().get("Soldier.png");
 		if (soldierTexture == null)
 			throw new RuntimeException("Soldier texture not loaded");
-		int count = 10;
+		int count = 8;
 		float size = 64;
 		float totalWidth = Gdx.graphics.getWidth();
 		float spawnAreaWidth = totalWidth * 4 / 5f;
@@ -87,7 +87,7 @@ public class LoadingScreen extends ScreenAdapter {
 		float start = (totalWidth - spawnAreaWidth) / 2;
 		for (int i = 0; i < count; i++) {
 			Soldier soldier = new Soldier(game, soldierTexture);
-			soldier.position.set(start + i * (size + spaceBetween), 80);
+			soldier.position.set(start + i * (size + spaceBetween), 40);
 			soldier.hitbox = new Hitbox(soldier.position, new Rectangle(-size / 2, -size / 2, size, size), soldier);
 			game.getEntitySystem().addEntity(soldier);
 			game.getPhysicsSystem().addObject(soldier.hitbox);
@@ -107,9 +107,12 @@ public class LoadingScreen extends ScreenAdapter {
 		game.getSpawnSystem().setSpawners(spawners);
 		
 		List<Vector2> targets = new ArrayList<Vector2>();
-		for (Soldier soldier : game.getEntitySystem().getSoldiers())
-			targets.add(soldier.position.cpy());
-
+		for (Soldier soldier : game.getEntitySystem().getSoldiers()) {
+			targets.add(soldier.position.cpy().add(
+					soldier.hitbox.getWidth() / 2,
+					soldier.hitbox.getHeight() / 2));
+		}
+		
 		game.getSpawnSystem().setTargets(targets);
 	}
 	

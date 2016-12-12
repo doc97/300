@@ -5,6 +5,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gamedev.threehundred.entities.SpawnSystem;
+import com.gamedev.threehundred.events.EntityCollisionEvent;
+import com.gamedev.threehundred.events.EventSystem;
 import com.gamedev.threehundred.input.InputSystem;
 import com.gamedev.threehundred.screens.ScreenSystem;
 import com.gamedev.threehundred.screens.Screens;
@@ -15,6 +17,7 @@ public class Game300 extends Game {
 	
 	private AssetManager manager;
 	private EntitySystem entitySys;
+	private EventSystem eventSys;
 	private InputSystem inputSys;
 	private ScreenSystem screenSys;
 	private SpawnSystem spawnSys;
@@ -25,6 +28,7 @@ public class Game300 extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		entitySys = new EntitySystem();
+		eventSys = new EventSystem();
 		inputSys = new InputSystem();
 		manager = new AssetManager();
 		screenSys = new ScreenSystem(this);
@@ -34,12 +38,17 @@ public class Game300 extends Game {
 		
 		screenSys.setNextScreen(Screens.LOADINGSCREEN);
 		screenSys.setSavedScreen(Screens.GAMESCREEN);
+		
+		eventSys.addListener(EntityCollisionEvent.class, entitySys);
+		eventSys.addListener(EntityCollisionEvent.class, spawnSys);
+		eventSys.addListener(EntityCollisionEvent.class, physics);
 	}
 	
 	
 	@Override
 	public void render () {
 		screenSys.update();
+		eventSys.update();
 		super.render();
 	}
 	
@@ -56,6 +65,10 @@ public class Game300 extends Game {
 
 	public EntitySystem getEntitySystem() {
 		return entitySys;
+	}
+	
+	public EventSystem getEventSystem() {
+		return eventSys;
 	}
 	
 	public InputSystem getInputSystem() {

@@ -21,7 +21,6 @@ public class GameScreen extends ScreenAdapter {
 		// Update
 		game.getSpawnSystem().update(delta);
 		game.getEntitySystem().update(delta);
-		game.getPhysicsSystem().preUpdate();
 		game.getPhysicsSystem().update(delta);
 		
 		// Render
